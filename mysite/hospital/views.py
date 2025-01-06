@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from .paginations import DoctorPagination
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
+from .permissions import *
 
 
 class RegisterView(generics.CreateAPIView):
@@ -52,6 +53,7 @@ class ProfileListAPIview(generics.ListAPIView):
 class PatientProfileViewSet(viewsets.ModelViewSet):
     queryset = PatientProfile.objects.all()
     serializer_class = PatientProfileSerializer
+    permission_classes = [CheckPatient]
 
 
 class DoctorsViewSet(viewsets.ModelViewSet):
@@ -62,7 +64,7 @@ class DoctorsViewSet(viewsets.ModelViewSet):
     search_fields = ['qualifications']
     ordering_fields = ['experience_years']
     pagination_class = DoctorPagination
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, CheckDoctor]
 
 
 class HospitalViewSet(viewsets.ModelViewSet):
@@ -124,3 +126,4 @@ class WardsViewSet(viewsets.ModelViewSet):
 class FeedbacksViewSet(viewsets.ModelViewSet):
     queryset = Feedbacks.objects.all()
     serializer_class = FeedbacksSerializer
+    permission_classes = [CheсkReview]

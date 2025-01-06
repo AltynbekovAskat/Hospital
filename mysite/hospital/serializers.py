@@ -8,14 +8,14 @@ from rest_framework_simplejwt.tokens import RefreshToken
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['phone_number', 'profile_picture', 'role', 'groups', 'user_permissions', 'user_permissions',
+        fields = ['phone_number', 'profile_picture', 'user_permissions', 'user_permissions',
                   'address', 'date_of_birth']
 
 
 class UserProSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'first_name', 'last_name', 'role']
+        fields = ['username', 'email', 'password', 'first_name', 'last_name',]
 
         extra_kwargs = {'password': {'write_only': True}}
 
@@ -108,18 +108,22 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
 
 class AppointmentsSerializer(serializers.ModelSerializer):
+    date_time = serializers.DateTimeField(format='%d-%m-%Y')
     class Meta:
         model = Appointments
         fields = ['patient_id', 'staff_id', 'date_time', 'status', 'notes']
 
 
 class MedicalRecordSerializer(serializers.ModelSerializer):
+    created_at = serializers.DateTimeField(format='%d-%m %M-%H')
     class Meta:
         model = MedicalRecord
         fields = ['patient_id', 'doctor_id', 'diagnosis', 'treatment', 'prescribed_medication', 'created_at']
 
 
 class PrescriptionsSerializer(serializers.ModelSerializer):
+    created_at = serializers.DateTimeField(format='%d-%m %Y')
+
     class Meta:
         model = Prescriptions
         fields = ['patient_id', 'staff_id', 'medication', 'dosage', 'created_at', 'medicalRecord']
